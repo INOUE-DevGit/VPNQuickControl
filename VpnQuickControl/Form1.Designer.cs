@@ -28,12 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            components = new System.ComponentModel.Container();
+            btnConnect = new Button();
+            btnDisconnect = new Button();
+            lblStatus = new Label();
+            notifyIcon = new NotifyIcon(components);
+            SuspendLayout();
+            // 
+            // btnConnect
+            // 
+            btnConnect.Location = new Point(131, 102);
+            btnConnect.Name = "btnConnect";
+            btnConnect.Size = new Size(75, 23);
+            btnConnect.TabIndex = 0;
+            btnConnect.Text = "接続";
+            btnConnect.UseVisualStyleBackColor = true;
+            // 
+            // btnDisconnect
+            // 
+            btnDisconnect.Location = new Point(364, 102);
+            btnDisconnect.Name = "btnDisconnect";
+            btnDisconnect.Size = new Size(75, 23);
+            btnDisconnect.TabIndex = 1;
+            btnDisconnect.Text = "切断";
+            btnDisconnect.UseVisualStyleBackColor = true;
+            // 
+            // lblStatus
+            // 
+            lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(265, 179);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(66, 15);
+            lblStatus.TabIndex = 2;
+            lblStatus.Text = "VPN未接続";
+            // 
+            // notifyIcon
+            // 
+            notifyIcon.Text = "VPN未接続";
+            notifyIcon.Visible = true;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(lblStatus);
+            Controls.Add(btnDisconnect);
+            Controls.Add(btnConnect);
+            Name = "Form1";
+            Text = "Form1";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Button btnConnect;
+        private Button btnDisconnect;
+        private Label lblStatus;
+        private NotifyIcon notifyIcon;
     }
 }
