@@ -4,14 +4,15 @@ namespace VpnQuickControl
 {
     public partial class MainWindow : Form
     {
-        private bool isVpnConnected = false; // VPN接続状態
-        private readonly string vpnConnectIconPath = @"Image\VPNConnected.ico"; // VPN接続時のアイコン
-        private readonly string vpnDisconnectIconPath = @"Image\VPNDisconnected.ico"; // VPN未接続時のアイコン
+        // VPN接続状態
+        private bool isVpnConnected = false;
+        // アイコンファイルパス
+        private readonly string vpnConnectIconPath = @"Image\VPNConnected.ico";
+        private readonly string vpnDisconnectIconPath = @"Image\VPNDisconnected.ico";
 
         public MainWindow()
         {
             InitializeComponent();
-            Text = "VpnQuickControl";
             Icon = new Icon(vpnDisconnectIconPath);
             ShowInTaskbar = true; // タスクバーに表示
             WindowState = FormWindowState.Minimized; // 最小化状態で起動
@@ -46,12 +47,12 @@ namespace VpnQuickControl
             if (isVpnConnected)
             {
                 Icon = new Icon(vpnConnectIconPath);
-                Text = "VPN接続済み";
+                lblStatus.Text = "VPN接続済み";
             }
             else
             {
                 Icon = new Icon(vpnDisconnectIconPath);
-                Text = "VPN未接続";
+                lblStatus.Text = "VPN未接続";
             }
         }
 
@@ -64,10 +65,10 @@ namespace VpnQuickControl
             base.Dispose(disposing);
         }
 
-        // WinAPI関数のインポート
+        // ホットキーの登録
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, KeyModifiers fsModifiers, Keys vk);
-
+        // ホットキーの解除
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
     }
