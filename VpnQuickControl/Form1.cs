@@ -12,7 +12,7 @@ namespace VpnQuickControl
 
         private void InitializeNotifyIcon()
         {
-            notifyIcon.Icon = new Icon("disconnected.ico"); // 最初のアイコン
+            notifyIcon.Icon = new Icon(@"Image\VPNDisconnected.ico"); // 最初のアイコン
             notifyIcon.Visible = true;
             notifyIcon.Text = "VPN未接続";
 
@@ -36,7 +36,7 @@ namespace VpnQuickControl
         {
             isVpnConnected = true;
             lblStatus.Text = "VPN接続済み";
-            notifyIcon.Icon = new Icon("connected.ico"); // 接続アイコンに変更
+            notifyIcon.Icon = new Icon(@"Image\VPNConnected.ico"); // 接続アイコンに変更
             notifyIcon.Text = "VPN接続済み";
             MessageBox.Show("VPNに接続しました。");
         }
@@ -45,7 +45,7 @@ namespace VpnQuickControl
         {
             isVpnConnected = false;
             lblStatus.Text = "VPN未接続";
-            notifyIcon.Icon = new Icon("disconnected.ico"); // 切断アイコンに変更
+            notifyIcon.Icon = new Icon(@"Image\VPNDisconnected.ico"); // 切断アイコンに変更
             notifyIcon.Text = "VPN未接続";
             MessageBox.Show("VPNを切断しました。");
         }
