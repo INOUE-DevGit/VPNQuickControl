@@ -1,24 +1,11 @@
 ﻿namespace VpnQuickControl
 {
-    partial class Form1
+    public partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
 
         #region Windows Form Designer generated code
 
@@ -43,7 +30,6 @@
             btnConnect.TabIndex = 0;
             btnConnect.Text = "接続";
             btnConnect.UseVisualStyleBackColor = true;
-            btnConnect.Click += btnConnect_Click;
             // 
             // btnDisconnect
             // 
@@ -53,7 +39,6 @@
             btnDisconnect.TabIndex = 1;
             btnDisconnect.Text = "切断";
             btnDisconnect.UseVisualStyleBackColor = true;
-            btnDisconnect.Click += btnDisconnect_Click;
             // 
             // lblStatus
             // 
@@ -69,16 +54,16 @@
             notifyIcon.Text = "VPN未接続";
             notifyIcon.Visible = true;
             // 
-            // Form1
+            // MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(523, 253);
             Controls.Add(lblStatus);
             Controls.Add(btnDisconnect);
             Controls.Add(btnConnect);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "MainWindow";
+            Text = "VpnQuickControl";
             ResumeLayout(false);
             PerformLayout();
         }
