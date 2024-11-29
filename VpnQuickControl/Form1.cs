@@ -1,65 +1,44 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace VpnQuickControl
 {
     public partial class Form1 : Form
     {
+        private bool isVpnConnected = false; // VPN接続状態
+
         public Form1()
         {
             InitializeComponent();
-            InitializeNotifyIcon(); // 通知アイコンの初期化
+            UpdateStatus(); // 初期状態の更新
         }
 
-        private bool isVpnConnected = false; // VPN接続状態
-
-        private void InitializeNotifyIcon()
+        private void UpdateStatus()
         {
-            notifyIcon.Icon = new Icon(@"Image\VPNDisconnected.ico"); // 最初のアイコン
-            notifyIcon.Visible = true;
-            notifyIcon.Text = "VPN未接続";
-
-            // 通知アイコンをダブルクリックでVPN接続/切断を切り替える
-            notifyIcon.DoubleClick += (sender, e) => ToggleVpnConnection();
-        }
-
-        private void ToggleVpnConnection()
-        {
+            // タスクバーのアイコンとウィンドウタイトルを状態に応じて変更
             if (isVpnConnected)
             {
-                DisconnectVpn();
+                this.Text = "VPN接続済み";
+                this.Icon = new Icon(@"Image\VPNConnected.ico"); // 接続中のアイコン
             }
             else
             {
-                ConnectVpn();
+                this.Text = "VPN未接続";
+                this.Icon = new Icon(@"Image\VPNDisconnected.ico"); // 未接続のアイコン
             }
         }
 
-        private void ConnectVpn()
-        {
-            isVpnConnected = true;
-            lblStatus.Text = "VPN接続済み";
-            notifyIcon.Icon = new Icon(@"Image\VPNConnected.ico"); // 接続アイコンに変更
-            notifyIcon.Text = "VPN接続済み";
-            MessageBox.Show("VPNに接続しました。");
-        }
-
-        private void DisconnectVpn()
-        {
-            isVpnConnected = false;
-            lblStatus.Text = "VPN未接続";
-            notifyIcon.Icon = new Icon(@"Image\VPNDisconnected.ico"); // 切断アイコンに変更
-            notifyIcon.Text = "VPN未接続";
-            MessageBox.Show("VPNを切断しました。");
-        }
-
-        // 接続ボタン
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            ConnectVpn();
+            isVpnConnected = true;
+            UpdateStatus();
         }
 
-        // 切断ボタン
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            DisconnectVpn();
+            isVpnConnected = false;
+            UpdateStatus();
         }
     }
 }
