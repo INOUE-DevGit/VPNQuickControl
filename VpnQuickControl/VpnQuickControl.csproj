@@ -23,4 +23,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del &quot;$(TargetDir)*.xml&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;del &quot;$(TargetDir)*.pdb&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)de&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)en&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)es&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)fr&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)hu&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)it&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)ko&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)pt-BR&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)ro&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)ru&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)sv&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)zh-Hans&quot; &gt; nul 2&gt;&amp;1&#xD;&#xA;rd /s /q &quot;$(TargetDir)zh-Hant&quot; &gt; nul 2&gt;&amp;1" />
+  </Target>
+
 </Project>
