@@ -6,7 +6,13 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PackageIcon></PackageIcon>
+    <ApplicationIcon>Image\VPNDisconnected.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Image\VPNDisconnected.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="Image\VPNConnected.ico">
