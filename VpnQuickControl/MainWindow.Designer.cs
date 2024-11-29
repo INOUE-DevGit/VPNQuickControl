@@ -24,7 +24,7 @@
             // 
             // btnConnect
             // 
-            btnConnect.Location = new Point(131, 102);
+            btnConnect.Location = new Point(25, 41);
             btnConnect.Name = "btnConnect";
             btnConnect.Size = new Size(75, 23);
             btnConnect.TabIndex = 0;
@@ -33,7 +33,7 @@
             // 
             // btnDisconnect
             // 
-            btnDisconnect.Location = new Point(364, 102);
+            btnDisconnect.Location = new Point(160, 41);
             btnDisconnect.Name = "btnDisconnect";
             btnDisconnect.Size = new Size(75, 23);
             btnDisconnect.TabIndex = 1;
@@ -43,7 +43,7 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(265, 179);
+            lblStatus.Location = new Point(103, 87);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(66, 15);
             lblStatus.TabIndex = 2;
@@ -58,7 +58,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(523, 253);
+            ClientSize = new Size(276, 131);
             Controls.Add(lblStatus);
             Controls.Add(btnDisconnect);
             Controls.Add(btnConnect);

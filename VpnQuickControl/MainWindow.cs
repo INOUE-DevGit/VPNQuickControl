@@ -4,23 +4,25 @@ namespace VpnQuickControl
 {
     public partial class MainWindow : Form
     {
-        private bool isVpnConnected = false;
+        private bool isVpnConnected = false; // VPN接続状態
+        private readonly string vpnConnectIconPath = @"Image\VPNConnected.ico"; // VPN接続時のアイコン
+        private readonly string vpnDisconnectIconPath = @"Image\VPNDisconnected.ico"; // VPN未接続時のアイコン
 
         public MainWindow()
         {
-            this.Text = "VpnQuickControl";
-            this.Icon = new Icon(@"Image\VPNDisconnected.ico");
-            this.ShowInTaskbar = true; // タスクバーに表示
-            this.WindowState = FormWindowState.Minimized; // 最小化状態で起動
-            this.Visible = false; // ウィンドウを表示するが最小化されている
-            RegisterHotKey(this.Handle, 0, KeyModifiers.None, Keys.F12); // F12キーで切り替え
-        }
+            InitializeComponent();
+            Text = "VpnQuickControl";
+            Icon = new Icon(vpnDisconnectIconPath);
+            ShowInTaskbar = true; // タスクバーに表示
+            WindowState = FormWindowState.Minimized; // 最小化状態で起動
+            Visible = true; // ウィンドウを最小化状態で表示
 
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.WindowState = FormWindowState.Minimized; // 最小化状態で起動
+            // グローバルホットキーを登録 (Ctrl + Shift + V)
+            bool hotKeyRegistered = RegisterHotKey(this.Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
+            if (!hotKeyRegistered)
+            {
+                MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         protected override void WndProc(ref Message m)
@@ -43,13 +45,13 @@ namespace VpnQuickControl
         {
             if (isVpnConnected)
             {
-                this.Icon = new Icon(@"Image\VPNConnected.ico");
-                this.Text = "VPN接続済み";
+                Icon = new Icon(vpnConnectIconPath);
+                Text = "VPN接続済み";
             }
             else
             {
-                this.Icon = new Icon(@"Image\VPNDisconnected.ico");
-                this.Text = "VPN未接続";
+                Icon = new Icon(vpnDisconnectIconPath);
+                Text = "VPN未接続";
             }
         }
 
@@ -62,11 +64,11 @@ namespace VpnQuickControl
             base.Dispose(disposing);
         }
 
-        // グローバルホットキーの登録/解除
-        [DllImport("user32.dll")]
+        // WinAPI関数のインポート
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, KeyModifiers fsModifiers, Keys vk);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
     }
 
