@@ -4,6 +4,8 @@ namespace VpnQuickControl
 {
     public partial class MainWindow : Form
     {
+        // VPNホスト名
+        private readonly string vpnHostName = "HostRocky";
         // VPN接続状態
         private bool isVpnConnected = false;
         // アイコンファイルパス
