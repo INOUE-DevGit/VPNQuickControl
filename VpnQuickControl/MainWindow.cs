@@ -21,7 +21,7 @@ namespace VpnQuickControl
             Visible = true; // ウィンドウを最小化状態で表示
 
             // グローバルホットキーを登録 (Ctrl + Shift + V)
-            bool hotKeyRegistered = RegisterHotKey(this.Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
+            bool hotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
             if (!hotKeyRegistered)
             {
                 MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -38,6 +38,24 @@ namespace VpnQuickControl
             base.WndProc(ref m);
         }
 
+        private void ToggleVpnState()
+        {
+            // VPNの接続状態を確認
+            if (isVpnConnected)
+            {
+                // VPNが接続済みの場合、切断処理を実行
+                DisconnectVpn();
+                isVpnConnected = !isVpnConnected;
+            }
+            else
+            {
+                // VPNが未接続の場合、接続処理を実行
+                ConnectVpn();
+                isVpnConnected = !isVpnConnected;
+            }
+            UpdateTaskbarIcon();
+        }
+
         private void ConnectVpn()
         {
 
@@ -45,13 +63,7 @@ namespace VpnQuickControl
 
         private void DisconnectVpn()
         {
-            
-        }
 
-        private void ToggleVpnState()
-        {
-            isVpnConnected = !isVpnConnected;
-            UpdateTaskbarIcon();
         }
 
         private void UpdateTaskbarIcon()
@@ -72,7 +84,7 @@ namespace VpnQuickControl
         {
             if (disposing)
             {
-                UnregisterHotKey(this.Handle, 0);
+                UnregisterHotKey(Handle, 0);
             }
             base.Dispose(disposing);
         }
