@@ -38,6 +38,16 @@ namespace VpnQuickControl
             base.WndProc(ref m);
         }
 
+        private void ConnectVpn()
+        {
+
+        }
+
+        private void DisconnectVpn()
+        {
+            
+        }
+
         private void ToggleVpnState()
         {
             isVpnConnected = !isVpnConnected;
