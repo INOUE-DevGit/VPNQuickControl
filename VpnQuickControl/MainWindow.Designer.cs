@@ -24,7 +24,7 @@
             // 
             // btnConnect
             // 
-            btnConnect.Location = new Point(25, 41);
+            btnConnect.Location = new Point(36, 23);
             btnConnect.Name = "btnConnect";
             btnConnect.Size = new Size(75, 23);
             btnConnect.TabIndex = 0;
@@ -33,7 +33,7 @@
             // 
             // btnDisconnect
             // 
-            btnDisconnect.Location = new Point(160, 41);
+            btnDisconnect.Location = new Point(176, 23);
             btnDisconnect.Name = "btnDisconnect";
             btnDisconnect.Size = new Size(75, 23);
             btnDisconnect.TabIndex = 1;
@@ -43,7 +43,7 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(103, 87);
+            lblStatus.Location = new Point(115, 62);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(66, 15);
             lblStatus.TabIndex = 2;
@@ -58,10 +58,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(276, 131);
+            ClientSize = new Size(279, 86);
             Controls.Add(lblStatus);
             Controls.Add(btnDisconnect);
             Controls.Add(btnConnect);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "MainWindow";
             Text = "VpnQuickControl";
             ResumeLayout(false);
