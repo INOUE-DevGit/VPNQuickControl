@@ -30,6 +30,7 @@
             btnConnect.TabIndex = 0;
             btnConnect.Text = "接続";
             btnConnect.UseVisualStyleBackColor = true;
+            btnConnect.Click += btnConnect_Click;
             // 
             // btnDisconnect
             // 
@@ -39,6 +40,7 @@
             btnDisconnect.TabIndex = 1;
             btnDisconnect.Text = "切断";
             btnDisconnect.UseVisualStyleBackColor = true;
+            btnDisconnect.Click += btnDisconnect_Click;
             // 
             // lblStatus
             // 

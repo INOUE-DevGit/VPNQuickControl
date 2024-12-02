@@ -157,6 +157,18 @@ namespace VpnQuickControl
         // ホットキーの解除
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            ConnectVpn();
+            UpdateTaskbarIcon();
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            DisconnectVpn();
+            UpdateTaskbarIcon();
+        }
     }
 
     [Flags]
