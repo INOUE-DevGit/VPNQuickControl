@@ -12,6 +12,9 @@ namespace VpnQuickControl
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // 設定ファイルの読み込み
+            Config.LoadConfig();
+
             // パスワードファイルの存在確認
             CheckAndCreatePasswordFile();
 

@@ -7,8 +7,6 @@ namespace VpnQuickControl
 {
     public partial class MainWindow : Form
     {
-        // VPN接続名
-        private readonly string vpnName = "HostRocky";
         // VPN接続状態
         private bool isVpnConnected = false;
         // アイコンファイルパス
@@ -18,6 +16,8 @@ namespace VpnQuickControl
         public MainWindow()
         {
             InitializeComponent();
+
+            // アイコンと初期状態の設定
             Icon = new Icon(vpnDisconnectIconPath);
             ShowInTaskbar = true; // タスクバーに表示
             WindowState = FormWindowState.Minimized; // 最小化状態で起動
@@ -26,9 +26,7 @@ namespace VpnQuickControl
             // グローバルホットキーを登録 (Ctrl + Shift + V)
             bool hotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
             if (!hotKeyRegistered)
-            {
                 MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         protected override void WndProc(ref Message m)
@@ -53,12 +51,12 @@ namespace VpnQuickControl
         {
             int retryCount = 0;
             const int MaxRetryCount = 3;
-            string vpnUserName = "user";
+            string vpnName = Config.VpnName;         // 設定ファイルからVPN名を取得
+            string vpnUserName = Config.UserName;    // 設定ファイルからユーザー名を取得
             string vpnPassword = GetDecryptedPassword();
 
             while (retryCount < MaxRetryCount && !isVpnConnected)
             {
-                // 接続コマンドの実行
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
@@ -101,7 +99,7 @@ namespace VpnQuickControl
         private static string GetDecryptedPassword()
         {
             // 暗号化されたパスワードをBase64文字列として読み込み
-            string encryptedPassword = File.ReadAllText("password.dat");
+            string encryptedPassword = File.ReadAllText(Config.PasswordFilePath);
 
             // Base64文字列をバイト配列に変換
             byte[] encryptedBytes = Convert.FromBase64String(encryptedPassword);
@@ -115,7 +113,8 @@ namespace VpnQuickControl
 
         private void DisconnectVpn()
         {
-            // 切断コマンドの実行
+            string vpnName = Config.VpnName; // 設定ファイルからVPN名を取得
+
             var process = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -154,6 +153,7 @@ namespace VpnQuickControl
         // ホットキーの登録
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, KeyModifiers fsModifiers, Keys vk);
+
         // ホットキーの解除
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
