@@ -27,7 +27,53 @@ namespace VpnQuickControl
             bool hotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
             if (!hotKeyRegistered)
                 MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            CheckVpnStatus();
         }
+
+        private void CheckVpnStatus()
+        {
+            try
+            {
+                string vpnName = Config.VpnName;
+
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "rasdial",
+                        Arguments = vpnName, // VPN名のみを指定して接続状況を確認
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                // "接続されている" などの成功メッセージが含まれているかチェック
+                if (process.ExitCode == 0)
+                {
+                    isVpnConnected = true;
+                    Invoke((Action)(() => lblStatus.Text = "VPN接続済み"));
+                }
+                else
+                {
+                    isVpnConnected = false;
+                    Invoke((Action)(() => lblStatus.Text = "VPN未接続"));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"VPN接続状況の確認中にエラーが発生しました:\n{ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                isVpnConnected = false; // デフォルトは未接続
+                lblStatus.Text = "VPN未接続";
+            }
+        }
+
 
         protected override void WndProc(ref Message m)
         {
