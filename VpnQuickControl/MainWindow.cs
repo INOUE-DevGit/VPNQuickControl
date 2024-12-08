@@ -69,6 +69,10 @@ namespace VpnQuickControl
                 ConnectVpn();
         }
 
+        private void btnConnect_Click(object sender, EventArgs e) => ConnectVpn();
+
+        private void btnDisconnect_Click(object sender, EventArgs e) => DisconnectVpn();
+
         /// <summary>
         /// VPNÚ‘±
         /// </summary>
