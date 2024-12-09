@@ -5,17 +5,17 @@ namespace VpnQuickControl
         [STAThread]
         static void Main()
         {
-            // ThreadExceptionƒCƒxƒ“ƒgEƒnƒ“ƒhƒ‰‚ğ“o˜^‚·‚é
+            // ThreadExceptionã‚¤ãƒ™ãƒ³ãƒˆãƒ»ãƒãƒ³ãƒ‰ãƒ©ã‚’ç™»éŒ²ã™ã‚‹
             Application.ThreadException += new
               ThreadExceptionEventHandler(Application_ThreadException);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // İ’èƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+            // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
             Config.LoadConfig();
 
-            // ƒpƒXƒ[ƒhƒtƒ@ƒCƒ‹‚Ì‘¶İŠm”F
+            // ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ç¢ºèª
             CheckAndCreatePasswordFile();
 
             Application.Run(new MainWindow());
@@ -23,28 +23,28 @@ namespace VpnQuickControl
 
         private static void CheckAndCreatePasswordFile()
         {
-            // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡AƒpƒXƒ[ƒh‚ğì¬
+            // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ä½œæˆ
             if (!File.Exists("password.dat"))
             {
-                MessageBox.Show("‰‰ñ‹N“®‚Ì‚½‚ßAVPNƒpƒXƒ[ƒh‚Ìİ’è‚ª•K—v‚Å‚·B", "ƒpƒXƒ[ƒhİ’è", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("åˆå›èµ·å‹•ã®ãŸã‚ã€VPNãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®è¨­å®šãŒå¿…è¦ã§ã™ã€‚", "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰è¨­å®š", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                string inputPassword = Microsoft.VisualBasic.Interaction.InputBox("VPN‚ÌƒpƒXƒ[ƒh‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢:", "ƒpƒXƒ[ƒhİ’è", "");
+                string inputPassword = Microsoft.VisualBasic.Interaction.InputBox("VPNã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„:", "ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰è¨­å®š", "");
                 if (!string.IsNullOrWhiteSpace(inputPassword))
                 {
                     SaveEncryptedPassword(inputPassword);
-                    MessageBox.Show("ƒpƒXƒ[ƒh‚ª•Û‘¶‚³‚ê‚Ü‚µ‚½B", "¬Œ÷", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒä¿å­˜ã•ã‚Œã¾ã—ãŸã€‚", "æˆåŠŸ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("ƒpƒXƒ[ƒh‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñBƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ğI—¹‚µ‚Ü‚·B", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Environment.Exit(0); // ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ğI—¹
+                    MessageBox.Show("ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ã¾ã™ã€‚", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Environment.Exit(0); // ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†
                 }
             }
         }
 
         private static void SaveEncryptedPassword(string plainTextPassword)
         {
-            // ƒpƒXƒ[ƒh‚ğˆÃ†‰»‚µ‚Ä•Û‘¶
+            // ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’æš—å·åŒ–ã—ã¦ä¿å­˜
             byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(plainTextPassword);
             byte[] encryptedBytes = System.Security.Cryptography.ProtectedData.Protect(passwordBytes, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
             File.WriteAllText("password.dat", Convert.ToBase64String(encryptedBytes));
@@ -52,15 +52,15 @@ namespace VpnQuickControl
 
         public static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            ShowErrorMessage(e.Exception, "Application_ThreadException‚É‚æ‚é—áŠO’Ê’m‚Å‚·B");
+            ShowErrorMessage(e.Exception, "Application_ThreadExceptionã«ã‚ˆã‚‹ä¾‹å¤–é€šçŸ¥ã§ã™ã€‚");
         }
 
         public static void ShowErrorMessage(Exception ex, string extraMessage)
         {
-            MessageBox.Show(extraMessage + " \n\\\\\\\\\n\n" +
-              "ƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B\n\n" +
-              "yƒGƒ‰[“à—ez\n" + ex.Message + "\n\n" +
-              "yƒXƒ^ƒbƒNƒgƒŒ[ƒXz\n" + ex.StackTrace);
+            MessageBox.Show(extraMessage + " \nâ€•â€•â€•â€•â€•â€•â€•â€•\n\n" +
+              "ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚\n\n" +
+              "ã€ã‚¨ãƒ©ãƒ¼å†…å®¹ã€‘\n" + ex.Message + "\n\n" +
+              "ã€ã‚¹ã‚¿ãƒƒã‚¯ãƒˆãƒ¬ãƒ¼ã‚¹ã€‘\n" + ex.StackTrace);
         }
     }
 }
