@@ -7,9 +7,9 @@ namespace VpnQuickControl
 {
     public partial class MainWindow : Form
     {
-        // VPNÚ‘±ó‘Ô
+        // VPNæ¥ç¶šçŠ¶æ…‹
         private bool isVpnConnected = false;
-        // ƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹ƒpƒX
+        // ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
         private readonly string vpnConnectIconPath = @"Image\VPNConnected.ico";
         private readonly string vpnDisconnectIconPath = @"Image\VPNDisconnected.ico";
 
@@ -23,43 +23,54 @@ namespace VpnQuickControl
         }
 
         /// <summary>
-        /// ƒEƒBƒ“ƒhƒE‚Ì‰Šú‰»
+        /// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®åˆæœŸåŒ–
         /// </summary>
         private void InitializeWindow()
         {
             Icon = new Icon(vpnDisconnectIconPath);
-            // ƒ^ƒXƒNƒo[‚É•\¦
+            // ã‚¿ã‚¹ã‚¯ãƒãƒ¼ã«è¡¨ç¤º
             ShowInTaskbar = true;
-            // Å¬‰»ó‘Ô‚Å‹N“®
+            // æœ€å°åŒ–çŠ¶æ…‹ã§èµ·å‹•
             WindowState = FormWindowState.Minimized;
-            // ƒEƒBƒ“ƒhƒE‚ğÅ¬‰»ó‘Ô‚Å•\¦
+            // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æœ€å°åŒ–çŠ¶æ…‹ã§è¡¨ç¤º
             Visible = true;
         }
 
         /// <summary>
-        /// ƒOƒ[ƒoƒ‹ƒzƒbƒgƒL[‚ğ“o˜^
+        /// ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã‚’ç™»éŒ²
         /// </summary>
         private void RegisterGlobalHotKey()
         {
-            // ƒOƒ[ƒoƒ‹ƒzƒbƒgƒL[‚ğ“o˜^ (Ctrl + Shift + V)
+            // ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã‚’ç™»éŒ² (Ctrl + Shift + V)
             bool hotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
 
             if (!hotKeyRegistered)
-                MessageBox.Show("ƒzƒbƒgƒL[‚Ì“o˜^‚É¸”s‚µ‚Ü‚µ‚½B", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã®ç™»éŒ²ã«å¤±æ•—ã—ã¾ã—ãŸã€‚", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
-        /// VPNÚ‘±ó‘Ô‚ğŠm”F
+        /// VPNæ¥ç¶šçŠ¶æ…‹ã‚’ç¢ºèª
         /// </summary>
         private void CheckVpnStatus()
         {
-            isVpnConnected = ExecuteVpnCommand("") == 0;
-            UpdateStatus(isVpnConnected ? VpnStatus.VPNÚ‘±Ï‚İ.ToString() : VpnStatus.VPN–¢Ú‘±.ToString());
+            switch (ExecuteVpnCommand(""))
+            {
+                case VpnStatus.VPNæœªæ¥ç¶š:
+                    isVpnConnected = false;
+                    break;
+                case VpnStatus.VPNæ¥ç¶šæ¸ˆã¿:
+                    isVpnConnected = true;
+                    break;
+                case VpnStatus.ã‚¨ãƒ©ãƒ¼:
+                default:
+                    break;
+            }
+            UpdateStatus(isVpnConnected ? VpnStatus.VPNæ¥ç¶šæ¸ˆã¿.ToString() : VpnStatus.VPNæœªæ¥ç¶š.ToString());
             UpdateTaskbarIcon();
         }
 
         /// <summary>
-        /// VPNÚ‘±ó‘Ô‚ğØ‚è‘Ö‚¦
+        /// VPNæ¥ç¶šçŠ¶æ…‹ã‚’åˆ‡ã‚Šæ›¿ãˆ
         /// </summary>
         private void ToggleVpnState()
         {
@@ -74,42 +85,59 @@ namespace VpnQuickControl
         private void btnDisconnect_Click(object sender, EventArgs e) => DisconnectVpn();
 
         /// <summary>
-        /// VPNÚ‘±
+        /// VPNæ¥ç¶š
         /// </summary>
         private void ConnectVpn()
         {
             string vpnCommand = $"{Config.VpnName} {Config.UserName} {GetDecryptedPassword()}";
-            bool success = ExecuteVpnCommand(vpnCommand) == 0;
+            
+            switch (ExecuteVpnCommand(vpnCommand))
+            {
+                case VpnStatus.VPNæœªæ¥ç¶š:
+                    isVpnConnected = false;
+                    break;
+                case VpnStatus.VPNæ¥ç¶šæ¸ˆã¿:
+                    isVpnConnected = true;
+                    break;
+                case VpnStatus.ã‚¨ãƒ©ãƒ¼:
+                default:
+                    break;
+            }
 
-            isVpnConnected = success;
-
-            if (success)
-                UpdateStatus(VpnStatus.VPNÚ‘±Ï‚İ.ToString());
-            else
-                MessageBox.Show("VPNÚ‘±‚É¸”s‚µ‚Ü‚µ‚½B", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            UpdateStatus(isVpnConnected ? VpnStatus.VPNæ¥ç¶šæ¸ˆã¿.ToString() : "VPNæ¥ç¶šå¤±æ•—");
             UpdateTaskbarIcon();
         }
 
         /// <summary>
-        /// VPNØ’f
+        /// VPNåˆ‡æ–­
         /// </summary>
         private void DisconnectVpn()
         {
             string vpnCommand = $"{Config.VpnName} /disconnect";
-            bool success = ExecuteVpnCommand(vpnCommand) == 0;
 
-            isVpnConnected = !success;
-            UpdateStatus(success ? VpnStatus.VPN–¢Ú‘±.ToString() : "VPNØ’f¸”s");
+            switch (ExecuteVpnCommand(vpnCommand))
+            {
+                case VpnStatus.VPNæœªæ¥ç¶š:
+                    isVpnConnected = false;
+                    break;
+                case VpnStatus.VPNæ¥ç¶šæ¸ˆã¿:
+                    isVpnConnected = true;
+                    break;
+                case VpnStatus.ã‚¨ãƒ©ãƒ¼:
+                default:
+                    break;
+            }
+            UpdateStatus(!isVpnConnected ? VpnStatus.VPNæœªæ¥ç¶š.ToString() : "VPNåˆ‡æ–­å¤±æ•—");
             UpdateTaskbarIcon();
         }
 
         /// <summary>
-        /// VPNƒRƒ}ƒ“ƒh‚ğÀs
+        /// VPNã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œ
         /// </summary>
         /// <param name="arguments"></param>
         /// 
         /// <returns></returns>
-        private static int ExecuteVpnCommand(string arguments)
+        private static VpnStatus ExecuteVpnCommand(string arguments)
         {
             try
             {
@@ -127,30 +155,44 @@ namespace VpnQuickControl
                 };
 
                 process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
                 process.WaitForExit();
 
-                return process.ExitCode;
+                // VPNæ¥ç¶šæ™‚åˆ‡æ–­æ™‚ã®æ™‚ã¯ExitCodeãŒ0ã€ãã‚Œä»¥å¤–ã¯ã‚¨ãƒ©ãƒ¼
+                if (process.ExitCode != 0)
+                    throw new Exception($"VPNã‚³ãƒãƒ³ãƒ‰ã®å®Ÿè¡Œã«å¤±æ•—ã—ã¾ã—ãŸã€‚ExitCode: {process.ExitCode}");
+
+                // æ¥ç¶šæ¸ˆã¿ã ã¨"æ¬¡ã®ã‚µãƒ¼ãƒãƒ¼ã«æ¥ç¶šã—ã¾ã—ãŸã€‚"
+                // æœªæ¥ç¶šã ã¨"æ¥ç¶šãªã—"
+                // æ¥ç¶šæ™‚ã¯ "{}ã«æ­£å¸¸ã«æ¥ç¶šã—ã¾ã—ãŸã€‚"
+                // åˆ‡æ–­æ™‚ã«ã¯"ã‚³ãƒãƒ³ãƒ‰ã¯æ­£å¸¸ã«çµ‚äº†ã—ã¾ã—ãŸã€‚"ã®ã¿ã€‚ã“ã‚Œã¯å‡¦ç†ãŒæˆåŠŸã—ãŸã™ã¹ã¦ã®å ´åˆã«å‡ºåŠ›ã•ã‚Œã‚‹
+                if (output.Contains("æ¥ç¶šã—ã¾ã—ãŸ"))
+                    return VpnStatus.VPNæ¥ç¶šæ¸ˆã¿;
+                else
+                    return VpnStatus.VPNæœªæ¥ç¶š;
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"VPNƒRƒ}ƒ“ƒh‚ÌÀs’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½: {ex.Message}", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return -1; // ƒGƒ‰[ƒR[ƒh‚Æ‚µ‚Ä -1 ‚ğ•Ô‚·
+                MessageBox.Show($"VPNã‚³ãƒãƒ³ãƒ‰ã®å®Ÿè¡Œä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ: {ex.Message}", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return VpnStatus.ã‚¨ãƒ©ãƒ¼;
             }
         }
 
         /// <summary>
-        /// ƒXƒe[ƒ^ƒX‚ğXV
+        /// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°
         /// </summary>
         /// <param name="status"></param>
         private void UpdateStatus(string status) => Invoke((Action)(() => lblStatus.Text = status));
 
         /// <summary>
-        /// ƒ^ƒXƒNƒo[ƒAƒCƒRƒ“‚ğXV
+        /// ã‚¿ã‚¹ã‚¯ãƒãƒ¼ã‚¢ã‚¤ã‚³ãƒ³ã‚’æ›´æ–°
         /// </summary>
         private void UpdateTaskbarIcon() => Icon = new Icon(isVpnConnected ? vpnConnectIconPath : vpnDisconnectIconPath);
 
         /// <summary>
-        /// ˆÃ†‰»‚³‚ê‚½ƒpƒXƒ[ƒh‚ğ•œ†
+        /// æš—å·åŒ–ã•ã‚ŒãŸãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å¾©å·
         /// </summary>
         private static string GetDecryptedPassword()
         {
@@ -164,7 +206,7 @@ namespace VpnQuickControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ƒpƒXƒ[ƒh‚Ì•œ†’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½: {ex.Message}", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å¾©å·ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ: {ex.Message}", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return string.Empty;
             }
         }
@@ -194,11 +236,11 @@ namespace VpnQuickControl
 
         private enum VpnStatus
         {
-            VPN–¢Ú‘±,
-            VPNÚ‘±s’†,
-            VPNÚ‘±Ï‚İ,
-            VPNØ’fs’†,
-            ƒGƒ‰[
+            VPNæœªæ¥ç¶š = 0,
+            VPNæ¥ç¶šè©¦è¡Œä¸­ = 1,
+            VPNæ¥ç¶šæ¸ˆã¿ = 2,
+            VPNåˆ‡æ–­è©¦è¡Œä¸­ = 3,
+            ã‚¨ãƒ©ãƒ¼ = -1
         }
     }
 
@@ -223,7 +265,7 @@ namespace VpnQuickControl
     //                StartInfo = new ProcessStartInfo
     //                {
     //                    FileName = "rasdial",
-    //                    Arguments = vpnName, // VPN–¼‚Ì‚İ‚ğw’è‚µ‚ÄÚ‘±ó‹µ‚ğŠm”F
+    //                    Arguments = vpnName, // VPNåã®ã¿ã‚’æŒ‡å®šã—ã¦æ¥ç¶šçŠ¶æ³ã‚’ç¢ºèª
     //                    RedirectStandardOutput = true,
     //                    RedirectStandardError = true,
     //                    UseShellExecute = false,
@@ -235,23 +277,23 @@ namespace VpnQuickControl
     //            string output = process.StandardOutput.ReadToEnd();
     //            process.WaitForExit();
 
-    //            // "Ú‘±‚³‚ê‚Ä‚¢‚é" ‚È‚Ç‚Ì¬Œ÷ƒƒbƒZ[ƒW‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+    //            // "æ¥ç¶šã•ã‚Œã¦ã„ã‚‹" ãªã©ã®æˆåŠŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå«ã¾ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
     //            if (process.ExitCode == 0)
     //            {
     //                isVpnConnected = true;
-    //                Invoke((Action)(() => lblStatus.Text = "VPNÚ‘±Ï‚İ"));
+    //                Invoke((Action)(() => lblStatus.Text = "VPNæ¥ç¶šæ¸ˆã¿"));
     //            }
     //            else
     //            {
     //                isVpnConnected = false;
-    //                Invoke((Action)(() => lblStatus.Text = "VPN–¢Ú‘±"));
+    //                Invoke((Action)(() => lblStatus.Text = "VPNæœªæ¥ç¶š"));
     //            }
     //        }
     //        catch (Exception ex)
     //        {
-    //            MessageBox.Show($"VPNÚ‘±ó‹µ‚ÌŠm”F’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½:\n{ex.Message}", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    //            isVpnConnected = false; // ƒfƒtƒHƒ‹ƒg‚Í–¢Ú‘±
-    //            lblStatus.Text = "VPN–¢Ú‘±";
+    //            MessageBox.Show($"VPNæ¥ç¶šçŠ¶æ³ã®ç¢ºèªä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ:\n{ex.Message}", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    //            isVpnConnected = false; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯æœªæ¥ç¶š
+    //            lblStatus.Text = "VPNæœªæ¥ç¶š";
     //        }
     //    }
 
@@ -266,7 +308,7 @@ namespace VpnQuickControl
 
     //    private void ToggleVpnState()
     //    {
-    //        // VPN‚ÌÚ‘±ó‘Ô‚ğŠm”F
+    //        // VPNã®æ¥ç¶šçŠ¶æ…‹ã‚’ç¢ºèª
     //        if (isVpnConnected)
     //            DisconnectVpn();
     //        else
@@ -278,8 +320,8 @@ namespace VpnQuickControl
     //    {
     //        int retryCount = 0;
     //        const int MaxRetryCount = 3;
-    //        string vpnName = Config.VpnName;         // İ’èƒtƒ@ƒCƒ‹‚©‚çVPN–¼‚ğæ“¾
-    //        string vpnUserName = Config.UserName;    // İ’èƒtƒ@ƒCƒ‹‚©‚çƒ†[ƒU[–¼‚ğæ“¾
+    //        string vpnName = Config.VpnName;         // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰VPNåã‚’å–å¾—
+    //        string vpnUserName = Config.UserName;    // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ¦ãƒ¼ã‚¶ãƒ¼åã‚’å–å¾—
     //        string vpnPassword = GetDecryptedPassword();
 
     //        while (retryCount < MaxRetryCount && !isVpnConnected)
@@ -288,17 +330,17 @@ namespace VpnQuickControl
     //            {
     //                StartInfo = new ProcessStartInfo
     //                {
-    //                    FileName = "rasdial",                                      // VPNÚ‘±ƒRƒ}ƒ“ƒh
-    //                    Arguments = $"{vpnName} {vpnUserName} {vpnPassword}",      // VPNÚ‘±–¼
-    //                    RedirectStandardOutput = true,                             // •W€o—Í‚ğƒŠƒ_ƒCƒŒƒNƒg(Ú‘±¬Œ÷‚âƒƒbƒZ[ƒW‚È‚Ç‚ğæ“¾‰Â”\‚É‚·‚é)
-    //                    RedirectStandardError = true,                              // •W€ƒGƒ‰[o—Í‚ğƒŠƒ_ƒCƒŒƒNƒg(ƒGƒ‰[ƒƒbƒZ[ƒW‚È‚Ç‚ğæ“¾‰Â”\‚É‚·‚é)
-    //                    UseShellExecute = false,                                   // ƒVƒFƒ‹‹@”\‚ğg—p‚µ‚È‚¢
-    //                    CreateNoWindow = true                                      // ƒRƒ“ƒ\[ƒ‹ƒEƒBƒ“ƒhƒE‚ğ•\¦‚µ‚È‚¢
+    //                    FileName = "rasdial",                                      // VPNæ¥ç¶šã‚³ãƒãƒ³ãƒ‰
+    //                    Arguments = $"{vpnName} {vpnUserName} {vpnPassword}",      // VPNæ¥ç¶šå
+    //                    RedirectStandardOutput = true,                             // æ¨™æº–å‡ºåŠ›ã‚’ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ(æ¥ç¶šæˆåŠŸã‚„ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãªã©ã‚’å–å¾—å¯èƒ½ã«ã™ã‚‹)
+    //                    RedirectStandardError = true,                              // æ¨™æº–ã‚¨ãƒ©ãƒ¼å‡ºåŠ›ã‚’ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ(ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãªã©ã‚’å–å¾—å¯èƒ½ã«ã™ã‚‹)
+    //                    UseShellExecute = false,                                   // ã‚·ã‚§ãƒ«æ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ãªã„
+    //                    CreateNoWindow = true                                      // ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºã—ãªã„
     //                }
     //            };
 
     //            process.Start();
-    //            this.Invoke((Action)(() => lblStatus.Text = "VPNÚ‘±s’†..."));
+    //            this.Invoke((Action)(() => lblStatus.Text = "VPNæ¥ç¶šè©¦è¡Œä¸­..."));
     //            string output = process.StandardOutput.ReadToEnd();
     //            string error = process.StandardError.ReadToEnd();
     //            process.WaitForExit();
@@ -306,41 +348,41 @@ namespace VpnQuickControl
     //            if (process.ExitCode == 0)
     //            {
     //                isVpnConnected = true;
-    //                Invoke((Action)(() => lblStatus.Text = "VPNÚ‘±Ï‚İ"));
+    //                Invoke((Action)(() => lblStatus.Text = "VPNæ¥ç¶šæ¸ˆã¿"));
     //            }
     //            else
     //            {
     //                retryCount++;
-    //                // TODO ƒ‰ƒxƒ‹‚É•\¦‚³‚ê‚È‚¢
-    //                Invoke((Action)(() => lblStatus.Text = $"VPNÚ‘±¸”sBƒŠƒgƒ‰ƒC: {retryCount}/{MaxRetryCount}"));
+    //                // TODO ãƒ©ãƒ™ãƒ«ã«è¡¨ç¤ºã•ã‚Œãªã„
+    //                Invoke((Action)(() => lblStatus.Text = $"VPNæ¥ç¶šå¤±æ•—ã€‚ãƒªãƒˆãƒ©ã‚¤: {retryCount}/{MaxRetryCount}"));
     //            }
     //        }
 
     //        if (!isVpnConnected)
     //        {
-    //            Invoke((Action)(() => lblStatus.Text = "VPN–¢Ú‘±"));
-    //            Invoke((Action)(() => MessageBox.Show("VPNÚ‘±‚É¸”s‚µ‚Ü‚µ‚½B", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error)));
+    //            Invoke((Action)(() => lblStatus.Text = "VPNæœªæ¥ç¶š"));
+    //            Invoke((Action)(() => MessageBox.Show("VPNæ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error)));
     //        }
     //    }
 
     //    private static string GetDecryptedPassword()
     //    {
-    //        // ˆÃ†‰»‚³‚ê‚½ƒpƒXƒ[ƒh‚ğBase64•¶š—ñ‚Æ‚µ‚Ä“Ç‚İ‚İ
+    //        // æš—å·åŒ–ã•ã‚ŒãŸãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’Base64æ–‡å­—åˆ—ã¨ã—ã¦èª­ã¿è¾¼ã¿
     //        string encryptedPassword = File.ReadAllText(Config.PasswordFilePath);
 
-    //        // Base64•¶š—ñ‚ğƒoƒCƒg”z—ñ‚É•ÏŠ·
+    //        // Base64æ–‡å­—åˆ—ã‚’ãƒã‚¤ãƒˆé…åˆ—ã«å¤‰æ›
     //        byte[] encryptedBytes = Convert.FromBase64String(encryptedPassword);
 
-    //        // •œ†‰»
+    //        // å¾©å·åŒ–
     //        byte[] decryptedBytes = ProtectedData.Unprotect(encryptedBytes, null, DataProtectionScope.CurrentUser);
 
-    //        // ƒoƒCƒg”z—ñ‚ğ•¶š—ñ‚É•ÏŠ·‚µ‚Ä•Ô‚·
+    //        // ãƒã‚¤ãƒˆé…åˆ—ã‚’æ–‡å­—åˆ—ã«å¤‰æ›ã—ã¦è¿”ã™
     //        return Encoding.UTF8.GetString(decryptedBytes);
     //    }
 
     //    private void DisconnectVpn()
     //    {
-    //        string vpnName = Config.VpnName; // İ’èƒtƒ@ƒCƒ‹‚©‚çVPN–¼‚ğæ“¾
+    //        string vpnName = Config.VpnName; // è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰VPNåã‚’å–å¾—
 
     //        var process = new Process
     //        {
@@ -358,7 +400,7 @@ namespace VpnQuickControl
     //        process.Start();
     //        process.WaitForExit();
 
-    //        lblStatus.Text = "VPN–¢Ú‘±";
+    //        lblStatus.Text = "VPNæœªæ¥ç¶š";
     //        isVpnConnected = false;
     //    }
 
@@ -377,11 +419,11 @@ namespace VpnQuickControl
     //        base.Dispose(disposing);
     //    }
 
-    //    // ƒzƒbƒgƒL[‚Ì“o˜^
+    //    // ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã®ç™»éŒ²
     //    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     //    private static extern bool RegisterHotKey(IntPtr hWnd, int id, KeyModifiers fsModifiers, Keys vk);
 
-    //    // ƒzƒbƒgƒL[‚Ì‰ğœ
+    //    // ãƒ›ãƒƒãƒˆã‚­ãƒ¼ã®è§£é™¤
     //    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     //    private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
