@@ -10,8 +10,8 @@ namespace VpnQuickControl
         // VPN接続状態
         private bool isVpnConnected = false;
         // アイコンファイルパス
-        private readonly string vpnConnectIconPath = @"Image\VPNConnected.ico";
-        private readonly string vpnDisconnectIconPath = @"Image\VPNDisconnected.ico";
+        private readonly string vpnConnectIconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Image", "VPNConnected.ico");
+        private readonly string vpnDisconnectIconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Image", "VPNDisconnected.ico");
 
         public MainWindow()
         {
