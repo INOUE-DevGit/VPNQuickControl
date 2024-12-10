@@ -86,9 +86,9 @@ namespace VpnQuickControl
         /// </summary>
         private void ConnectVpn()
         {
-            const int MaxRetryCount = 3;      // 最大再試行回数
-            const int RetryDelayMs = 2000;    // 再試行間隔（ミリ秒）
-            int retryCount = 0;               // 現在の再試行回数
+            const int MaxRetryCount = 3;
+            const int RetryDelayMs = 2000;
+            int retryCount = 0;
 
             UpdateStatus(VpnStatus.VPN接続試行中.ToString());
 
