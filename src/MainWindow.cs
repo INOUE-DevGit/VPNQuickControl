@@ -9,9 +9,6 @@ namespace VpnQuickControl
     {
         // VPN接続状態
         private bool isVpnConnected = false;
-        // アイコンファイルパス
-        private readonly string vpnConnectIconPath = @"Image\VPNConnected.ico";
-        private readonly string vpnDisconnectIconPath = @"Image\VPNDisconnected.ico";
 
         public MainWindow()
         {
@@ -27,7 +24,7 @@ namespace VpnQuickControl
         /// </summary>
         private void InitializeWindow()
         {
-            Icon = new Icon(vpnDisconnectIconPath);
+            Icon = new Icon(Config.VpnDisconnectIconPath);
             // タスクバーに表示
             ShowInTaskbar = true;
             // 最小化状態で起動
@@ -205,7 +202,7 @@ namespace VpnQuickControl
         /// <summary>
         /// タスクバーアイコンを更新
         /// </summary>
-        private void UpdateTaskbarIcon() => Icon = new Icon(isVpnConnected ? vpnConnectIconPath : vpnDisconnectIconPath);
+        private void UpdateTaskbarIcon() => Icon = new Icon(isVpnConnected ? Config.VpnConnectIconPath : Config.VpnDisconnectIconPath);
 
         /// <summary>
         /// 暗号化されたパスワードを復号

@@ -24,6 +24,16 @@ namespace VpnQuickControl
         private const string ConfigFilePath = "config.json";
 
         /// <summary>
+        /// VPN接続アイコンのパス
+        /// </summary>
+        public const string VpnConnectIconPath = @"Image\VPNConnected.ico";
+
+        /// <summary>
+        /// VPN未接続アイコンのパス
+        /// </summary>
+        public const string VpnDisconnectIconPath = @"Image\VPNDisconnected.ico";
+
+        /// <summary>
         /// 設定ファイルを読み込む。存在しない場合はデフォルト設定を作成。
         /// </summary>
         public static void LoadConfig()
