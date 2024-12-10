@@ -24,7 +24,7 @@ namespace VpnQuickControl
         private static void CheckAndCreatePasswordFile()
         {
             // ファイルが存在しない場合、パスワードを作成
-            if (!File.Exists("password.dat"))
+            if (!File.Exists(Config.PasswordFilePath))
             {
                 MessageBox.Show("初回起動のため、VPNパスワードの設定が必要です。", "パスワード設定", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -47,7 +47,7 @@ namespace VpnQuickControl
             // パスワードを暗号化して保存
             byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(plainTextPassword);
             byte[] encryptedBytes = System.Security.Cryptography.ProtectedData.Protect(passwordBytes, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
-            File.WriteAllText("password.dat", Convert.ToBase64String(encryptedBytes));
+            File.WriteAllText(Config.PasswordFilePath, Convert.ToBase64String(encryptedBytes));
         }
 
         public static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
