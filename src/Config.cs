@@ -52,8 +52,8 @@ namespace VpnQuickControl
                 var config = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(ConfigFilePath));
 
                 // 設定値をプロパティに割り当てる
-                VpnName = config?.GetValueOrDefault("VpnName", VpnName) ?? VpnName;
-                UserName = config?.GetValueOrDefault("UserName", UserName) ?? UserName;
+                VpnName = config?.GetValueOrDefault(nameof(VpnName), VpnName) ?? VpnName;
+                UserName = config?.GetValueOrDefault(nameof(UserName), UserName) ?? UserName;
             }
             catch (Exception ex)
             {
