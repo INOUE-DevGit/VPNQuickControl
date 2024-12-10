@@ -8,7 +8,7 @@ namespace VpnQuickControl
     public partial class MainWindow : Form
     {
         // VPN接続状態
-        private bool isVpnConnected = false;
+        private bool _isVpnConnected = false;
 
         public MainWindow()
         {
@@ -53,16 +53,16 @@ namespace VpnQuickControl
             switch (ExecuteVpnCommand(""))
             {
                 case VpnStatus.VPN未接続:
-                    isVpnConnected = false;
+                    _isVpnConnected = false;
                     break;
                 case VpnStatus.VPN接続済み:
-                    isVpnConnected = true;
+                    _isVpnConnected = true;
                     break;
                 case VpnStatus.エラー:
                 default:
                     break;
             }
-            UpdateStatus(isVpnConnected ? VpnStatus.VPN接続済み.ToString() : VpnStatus.VPN未接続.ToString());
+            UpdateStatus(_isVpnConnected ? VpnStatus.VPN接続済み.ToString() : VpnStatus.VPN未接続.ToString());
             UpdateTaskbarIcon();
         }
 
@@ -71,7 +71,7 @@ namespace VpnQuickControl
         /// </summary>
         private void ToggleVpnState()
         {
-            if (isVpnConnected)
+            if (_isVpnConnected)
                 DisconnectVpn();
             else
                 ConnectVpn();
@@ -92,7 +92,7 @@ namespace VpnQuickControl
 
             UpdateStatus(VpnStatus.VPN接続試行中.ToString()); // ステータスを「接続試行中」に更新
 
-            while (retryCount < MaxRetryCount && !isVpnConnected)
+            while (retryCount < MaxRetryCount && !_isVpnConnected)
             {
                 retryCount++;
                 string vpnCommand = $"{Config.VpnName} {Config.UserName} {GetDecryptedPassword()}";
@@ -101,7 +101,7 @@ namespace VpnQuickControl
                 switch (ExecuteVpnCommand(vpnCommand))
                 {
                     case VpnStatus.VPN接続済み:
-                        isVpnConnected = true;
+                        _isVpnConnected = true;
                         UpdateStatus(VpnStatus.VPN接続済み.ToString());
                         UpdateTaskbarIcon();
                         return;
@@ -109,7 +109,7 @@ namespace VpnQuickControl
                     case VpnStatus.VPN未接続:
                     case VpnStatus.エラー:
                     default:
-                        isVpnConnected = false;
+                        _isVpnConnected = false;
                         UpdateStatus($"{VpnStatus.VPN接続試行中}... ({retryCount}/{MaxRetryCount})");
                         break;
                 }
@@ -132,16 +132,16 @@ namespace VpnQuickControl
             switch (ExecuteVpnCommand(vpnCommand))
             {
                 case VpnStatus.VPN未接続:
-                    isVpnConnected = false;
+                    _isVpnConnected = false;
                     break;
                 case VpnStatus.VPN接続済み:
-                    isVpnConnected = true;
+                    _isVpnConnected = true;
                     break;
                 case VpnStatus.エラー:
                 default:
                     break;
             }
-            UpdateStatus(!isVpnConnected ? VpnStatus.VPN未接続.ToString() : "VPN切断失敗");
+            UpdateStatus(!_isVpnConnected ? VpnStatus.VPN未接続.ToString() : "VPN切断失敗");
             UpdateTaskbarIcon();
         }
 
@@ -202,7 +202,7 @@ namespace VpnQuickControl
         /// <summary>
         /// タスクバーアイコンを更新
         /// </summary>
-        private void UpdateTaskbarIcon() => Icon = new Icon(isVpnConnected ? Config.VpnConnectIconPath : Config.VpnDisconnectIconPath);
+        private void UpdateTaskbarIcon() => Icon = new Icon(_isVpnConnected ? Config.VpnConnectIconPath : Config.VpnDisconnectIconPath);
 
         /// <summary>
         /// 暗号化されたパスワードを復号
