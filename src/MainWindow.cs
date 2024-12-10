@@ -89,23 +89,40 @@ namespace VpnQuickControl
         /// </summary>
         private void ConnectVpn()
         {
-            string vpnCommand = $"{Config.VpnName} {Config.UserName} {GetDecryptedPassword()}";
-            
-            switch (ExecuteVpnCommand(vpnCommand))
+            const int MaxRetryCount = 3;      // 最大再試行回数
+            const int RetryDelayMs = 2000;    // 再試行間隔（ミリ秒）
+            int retryCount = 0;               // 現在の再試行回数
+
+            UpdateStatus(VpnStatus.VPN接続試行中.ToString()); // ステータスを「接続試行中」に更新
+
+            while (retryCount < MaxRetryCount && !isVpnConnected)
             {
-                case VpnStatus.VPN未接続:
-                    isVpnConnected = false;
-                    break;
-                case VpnStatus.VPN接続済み:
-                    isVpnConnected = true;
-                    break;
-                case VpnStatus.エラー:
-                default:
-                    break;
+                retryCount++;
+                string vpnCommand = $"{Config.VpnName} {Config.UserName} {GetDecryptedPassword()}";
+
+                // VPN接続コマンドを実行
+                switch (ExecuteVpnCommand(vpnCommand))
+                {
+                    case VpnStatus.VPN接続済み:
+                        isVpnConnected = true;
+                        UpdateStatus(VpnStatus.VPN接続済み.ToString());
+                        UpdateTaskbarIcon();
+                        return;
+
+                    case VpnStatus.VPN未接続:
+                    case VpnStatus.エラー:
+                    default:
+                        isVpnConnected = false;
+                        UpdateStatus($"{VpnStatus.VPN接続試行中}... ({retryCount}/{MaxRetryCount})");
+                        break;
+                }
+                Thread.Sleep(RetryDelayMs);
             }
 
-            UpdateStatus(isVpnConnected ? VpnStatus.VPN接続済み.ToString() : "VPN接続失敗");
+            // 最大再試行回数に達しても成功しなかった場合
+            UpdateStatus("VPN接続失敗");
             UpdateTaskbarIcon();
+            MessageBox.Show("VPN接続に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
