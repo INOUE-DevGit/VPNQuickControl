@@ -151,9 +151,8 @@ namespace VpnQuickControl
         /// <summary>
         /// VPNコマンドを実行
         /// </summary>
-        /// <param name="arguments"></param>
-        /// 
-        /// <returns></returns>
+        /// <param name="arguments">VPNパラメータ</param>
+        /// <remarks>argumentsで空文字を送るとステータスの確認が行えます。</remarks>
         private static VpnStatus ExecuteVpnCommand(string arguments)
         {
             try
@@ -200,7 +199,7 @@ namespace VpnQuickControl
         /// <summary>
         /// ステータスを更新
         /// </summary>
-        /// <param name="status"></param>
+        /// <param name="status">ラベルに表示させる文字列</param>
         private void UpdateStatus(string status) => Invoke((Action)(() => lblStatus.Text = status));
 
         /// <summary>
