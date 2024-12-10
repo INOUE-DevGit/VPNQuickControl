@@ -90,7 +90,7 @@ namespace VpnQuickControl
             const int RetryDelayMs = 2000;    // 再試行間隔（ミリ秒）
             int retryCount = 0;               // 現在の再試行回数
 
-            UpdateStatus(VpnStatus.VPN接続試行中.ToString()); // ステータスを「接続試行中」に更新
+            UpdateStatus(VpnStatus.VPN接続試行中.ToString());
 
             while (retryCount < MaxRetryCount && !_isVpnConnected)
             {
