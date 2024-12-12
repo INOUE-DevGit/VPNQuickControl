@@ -2,23 +2,41 @@ namespace VpnQuickControl
 {
     internal static class Program
     {
+        private static Mutex? appMutex;
+
         [STAThread]
         static void Main()
         {
-            // ThreadExceptionイベント・ハンドラを登録する
-            Application.ThreadException += new
-              ThreadExceptionEventHandler(Application_ThreadException);
+            // Mutexを使って二重起動を防ぐ
+            appMutex = new Mutex(true, "VpnQuickControlAppMutex", out bool isNewInstance);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            if (!isNewInstance)
+            {
+                MessageBox.Show("アプリケーションは既に起動しています。", "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
-            // 設定ファイルの読み込み
-            Config.LoadConfig();
+            try
+            {
+                // ThreadExceptionイベント・ハンドラを登録する
+                Application.ThreadException += Application_ThreadException;
 
-            // パスワードファイルの存在確認
-            CheckAndCreatePasswordFile();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new MainWindow());
+                // 設定ファイルの読み込み
+                Config.LoadConfig();
+
+                // パスワードファイルの存在確認
+                CheckAndCreatePasswordFile();
+
+                Application.Run(new MainWindow());
+            }
+            finally
+            {
+                // アプリケーション終了時にMutexを解放
+                appMutex.ReleaseMutex();
+            }
         }
 
         private static void CheckAndCreatePasswordFile()
