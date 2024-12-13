@@ -156,6 +156,8 @@ namespace VpnQuickControl
         {
             try
             {
+                Config.LoadConfig();
+
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
