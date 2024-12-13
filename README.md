@@ -1,4 +1,4 @@
-# VpnQuickControl
+# VPNQuickControl
 
 VPNの切り替えをショートカットキーで行うことができてタスクバーで接続状態を確認できるアプリです。
 
