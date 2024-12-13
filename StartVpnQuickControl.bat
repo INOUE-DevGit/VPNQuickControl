@@ -1,4 +1,4 @@
 @echo off
-cd "C:\Dev\VpnQuickControl"
-start "" "C:\Dev\VpnQuickControl\VpnQuickControl.exe"
+cd "C:\Dev\VPNQuickControl"
+start "" "C:\Dev\VPNQuickControl\VPNQuickControl.exe"
 exit
