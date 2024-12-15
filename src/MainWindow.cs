@@ -97,6 +97,7 @@ namespace VpnQuickControl
             while (retryCount < MaxRetryCount && !_isVpnConnected)
             {
                 retryCount++;
+                Config.LoadConfig();
                 string vpnCommand = $"{Config.VpnName} {Config.UserName} {GetDecryptedPassword()}";
 
                 // VPN接続コマンドを実行
@@ -129,6 +130,7 @@ namespace VpnQuickControl
         /// </summary>
         private void DisconnectVpn()
         {
+            Config.LoadConfig();
             string vpnCommand = $"{Config.VpnName} /disconnect";
 
             switch (ExecuteVpnCommand(vpnCommand))
@@ -156,8 +158,6 @@ namespace VpnQuickControl
         {
             try
             {
-                Config.LoadConfig();
-
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
@@ -279,6 +279,9 @@ namespace VpnQuickControl
 
     public static class EnumExtensions
     {
+        /// <summary>
+        /// VpnStatusのDescriptionを取得
+        /// </summary>
         public static string GetDescription(this Enum value)
         {
             FieldInfo? field = value.GetType().GetField(value.ToString());
