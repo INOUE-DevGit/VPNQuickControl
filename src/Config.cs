@@ -7,7 +7,7 @@ namespace VpnQuickControl
         /// <summary>
         /// VPN接続名
         /// </summary>
-        public static string VpnName { get; private set; } = "VPNName";
+        public static string VPNName { get; private set; } = "VPNName";
         /// <summary>
         /// ユーザー名
         /// </summary>
@@ -26,12 +26,12 @@ namespace VpnQuickControl
         /// <summary>
         /// VPN接続アイコンのパス
         /// </summary>
-        public const string VpnConnectIconPath = @"Image\VPNConnected.ico";
+        public const string VPNConnectIconPath = @"Image\VPNConnected.ico";
 
         /// <summary>
         /// VPN未接続アイコンのパス
         /// </summary>
-        public const string VpnDisconnectIconPath = @"Image\VPNDisconnected.ico";
+        public const string VPNDisconnectIconPath = @"Image\VPNDisconnected.ico";
 
         /// <summary>
         /// 設定ファイルを読み込む。存在しない場合はデフォルト設定を作成。
@@ -52,7 +52,7 @@ namespace VpnQuickControl
                 var config = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(ConfigFilePath));
 
                 // 設定値をプロパティに割り当てる
-                VpnName = config?.GetValueOrDefault(nameof(VpnName), VpnName) ?? VpnName;
+                VPNName = config?.GetValueOrDefault(nameof(VPNName), VPNName) ?? VPNName;
                 UserName = config?.GetValueOrDefault(nameof(UserName), UserName) ?? UserName;
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace VpnQuickControl
         {
             var defaultConfig = new
             {
-                VpnName,
+                VPNName,
                 UserName
             };
 

@@ -26,7 +26,7 @@ namespace VpnQuickControl
         /// </summary>
         private void InitializeWindow()
         {
-            Icon = new Icon(Config.VpnDisconnectIconPath);
+            Icon = new Icon(Config.VPNDisconnectIconPath);
             // タスクバーに表示
             ShowInTaskbar = true;
             // 最小化状態で起動
@@ -97,7 +97,7 @@ namespace VpnQuickControl
             {
                 retryCount++;
                 Config.LoadConfig();
-                string vpnCommand = $"{Config.VpnName} {Config.UserName} {GetDecryptedPassword()}";
+                string vpnCommand = $"{Config.VPNName} {Config.UserName} {GetDecryptedPassword()}";
 
                 // VPN接続コマンドを実行
                 switch (ExecuteVpnCommand(vpnCommand))
@@ -130,7 +130,7 @@ namespace VpnQuickControl
         private void DisconnectVpn()
         {
             Config.LoadConfig();
-            string vpnCommand = $"{Config.VpnName} /disconnect";
+            string vpnCommand = $"{Config.VPNName} /disconnect";
 
             switch (ExecuteVpnCommand(vpnCommand))
             {
@@ -205,7 +205,7 @@ namespace VpnQuickControl
         /// <summary>
         /// タスクバーアイコンを更新
         /// </summary>
-        private void UpdateTaskbarIcon() => Icon = new Icon(_isVpnConnected ? Config.VpnConnectIconPath : Config.VpnDisconnectIconPath);
+        private void UpdateTaskbarIcon() => Icon = new Icon(_isVpnConnected ? Config.VPNConnectIconPath : Config.VPNDisconnectIconPath);
 
         /// <summary>
         /// 暗号化されたパスワードを復号
