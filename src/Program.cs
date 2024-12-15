@@ -70,10 +70,10 @@ namespace VPNQuickControl
 
         public static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            MessageBox.Show("Application_ThreadExceptionによる例外通知です。\n――――――――\n\n" +
-              "エラーが発生しました。\n\n" +
-              "【エラー内容】\n" + e.Exception.Message + "\n\n" +
-              "【スタックトレース】\n" + e.Exception.StackTrace);
+            MessageBox.Show($"Application_ThreadExceptionによる例外通知です。{Environment.NewLine}――――――――{Environment.NewLine}" +
+              $"エラーが発生しました。{Environment.NewLine}" +
+              $"【エラー内容】{Environment.NewLine}" + e.Exception.Message + Environment.NewLine +
+              $"【スタックトレース】{Environment.NewLine}" + e.Exception.StackTrace);
         }
     }
 }

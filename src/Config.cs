@@ -57,7 +57,7 @@ namespace VPNQuickControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"設定ファイルの読み込みに失敗しました。\nエラー: {ex.Message}",
+                MessageBox.Show($"設定ファイルの読み込みに失敗しました。{Environment.NewLine}エラー: {ex.Message}",
                                 "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
