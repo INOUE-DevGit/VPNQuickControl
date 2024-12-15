@@ -55,7 +55,7 @@ namespace VpnQuickControl
                 else
                 {
                     MessageBox.Show("パスワードが入力されていません。アプリケーションを終了します。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Environment.Exit(0); // アプリケーションを終了
+                    Environment.Exit(0);
                 }
             }
         }
