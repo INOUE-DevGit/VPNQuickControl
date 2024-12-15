@@ -59,7 +59,7 @@ namespace VpnQuickControl
             {
                 MessageBox.Show($"設定ファイルの読み込みに失敗しました。\nエラー: {ex.Message}",
                                 "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1); // アプリケーションを終了
+                Environment.Exit(1);
             }
         }
 
