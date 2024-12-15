@@ -1,6 +1,7 @@
 @echo off
 
 rem _/_/_/_/_/_/_/_/_/ ユーザー設定 _/_/_/_/_/_/_/_/_/
+
 rem アプリケーションを配置しているディレクトリのパス
 set APP_DIR="C:\Dev\VPNQuickControl"
 
@@ -8,9 +9,6 @@ rem アプリケーションの実行ファイル名
 set APP_EXE="VPNQuickControl.exe"
 
 rem _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-
-
-
 
 
 if not exist %APP_DIR% (
