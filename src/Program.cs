@@ -1,4 +1,4 @@
-namespace VpnQuickControl
+namespace VPNQuickControl
 {
     internal static class Program
     {

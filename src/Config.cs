@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace VpnQuickControl
+namespace VPNQuickControl
 {
     public static class Config
     {

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace VpnQuickControl
+namespace VPNQuickControl
 {
     public partial class MainWindow : Form
     {

@@ -1,4 +1,4 @@
-namespace VpnQuickControl
+namespace VPNQuickControl
 {
     public partial class MainWindow
     {
