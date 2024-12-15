@@ -111,6 +111,8 @@ namespace VPNQuickControl
                     case VPNStatus.Disconnected:
                     case VPNStatus.Error:
                     default:
+                        // 接続失敗時にポートを閉じるため切断処理
+                        DisconnectVpn();
                         _isVPNConnected = false;
                         UpdateStatus($"{VPNStatus.Connecting.GetDescription()}... ({retryCount}/{MaxRetryCount})");
                         break;
