@@ -31,7 +31,6 @@ namespace VpnQuickControl
             ShowInTaskbar = true;
             // 最小化状態で起動
             WindowState = FormWindowState.Minimized;
-            // ウィンドウを最小化状態で表示
             Visible = true;
         }
 
