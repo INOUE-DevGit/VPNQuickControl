@@ -10,7 +10,7 @@ namespace VpnQuickControl
     public partial class MainWindow : Form
     {
         // VPN接続状態
-        private bool _isVpnConnected = false;
+        private bool _isVPNConnected = false;
 
         public MainWindow()
         {
@@ -53,17 +53,17 @@ namespace VpnQuickControl
         {
             switch (ExecuteVpnCommand(""))
             {
-                case VpnStatus.Disconnected:
-                    _isVpnConnected = false;
+                case VPNStatus.Disconnected:
+                    _isVPNConnected = false;
                     break;
-                case VpnStatus.Connected:
-                    _isVpnConnected = true;
+                case VPNStatus.Connected:
+                    _isVPNConnected = true;
                     break;
-                case VpnStatus.Error:
+                case VPNStatus.Error:
                 default:
                     break;
             }
-            UpdateStatus(_isVpnConnected ? VpnStatus.Connected.GetDescription() : VpnStatus.Disconnected.GetDescription());
+            UpdateStatus(_isVPNConnected ? VPNStatus.Connected.GetDescription() : VPNStatus.Disconnected.GetDescription());
             UpdateTaskbarIcon();
         }
 
@@ -72,7 +72,7 @@ namespace VpnQuickControl
         /// </summary>
         private void ToggleVpnState()
         {
-            if (_isVpnConnected)
+            if (_isVPNConnected)
                 DisconnectVpn();
             else
                 ConnectVpn();
@@ -91,9 +91,9 @@ namespace VpnQuickControl
             const int RetryDelayMs = 2000;
             int retryCount = 0;
 
-            UpdateStatus(VpnStatus.Connecting.GetDescription());
+            UpdateStatus(VPNStatus.Connecting.GetDescription());
 
-            while (retryCount < MaxRetryCount && !_isVpnConnected)
+            while (retryCount < MaxRetryCount && !_isVPNConnected)
             {
                 retryCount++;
                 Config.LoadConfig();
@@ -102,24 +102,24 @@ namespace VpnQuickControl
                 // VPN接続コマンドを実行
                 switch (ExecuteVpnCommand(vpnCommand))
                 {
-                    case VpnStatus.Connected:
-                        _isVpnConnected = true;
-                        UpdateStatus(VpnStatus.Connected.GetDescription());
+                    case VPNStatus.Connected:
+                        _isVPNConnected = true;
+                        UpdateStatus(VPNStatus.Connected.GetDescription());
                         UpdateTaskbarIcon();
                         return;
 
-                    case VpnStatus.Disconnected:
-                    case VpnStatus.Error:
+                    case VPNStatus.Disconnected:
+                    case VPNStatus.Error:
                     default:
-                        _isVpnConnected = false;
-                        UpdateStatus($"{VpnStatus.Connecting.GetDescription()}... ({retryCount}/{MaxRetryCount})");
+                        _isVPNConnected = false;
+                        UpdateStatus($"{VPNStatus.Connecting.GetDescription()}... ({retryCount}/{MaxRetryCount})");
                         break;
                 }
                 Thread.Sleep(RetryDelayMs);
             }
 
             // 最大再試行回数に達しても成功しなかった場合
-            UpdateStatus(VpnStatus.ConnectionFailed.GetDescription());
+            UpdateStatus(VPNStatus.ConnectionFailed.GetDescription());
             UpdateTaskbarIcon();
             MessageBox.Show("VPN接続に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -134,17 +134,17 @@ namespace VpnQuickControl
 
             switch (ExecuteVpnCommand(vpnCommand))
             {
-                case VpnStatus.Disconnected:
-                    _isVpnConnected = false;
+                case VPNStatus.Disconnected:
+                    _isVPNConnected = false;
                     break;
-                case VpnStatus.Connected:
-                    _isVpnConnected = true;
+                case VPNStatus.Connected:
+                    _isVPNConnected = true;
                     break;
-                case VpnStatus.Error:
+                case VPNStatus.Error:
                 default:
                     break;
             }
-            UpdateStatus(!_isVpnConnected ? VpnStatus.Disconnected.GetDescription() : VpnStatus.ConnectionFailed.GetDescription());
+            UpdateStatus(!_isVPNConnected ? VPNStatus.Disconnected.GetDescription() : VPNStatus.ConnectionFailed.GetDescription());
             UpdateTaskbarIcon();
         }
 
@@ -153,7 +153,7 @@ namespace VpnQuickControl
         /// </summary>
         /// <param name="arguments">VPNパラメータ</param>
         /// <remarks>argumentsで空文字を送るとステータスの確認が行えます。</remarks>
-        private static VpnStatus ExecuteVpnCommand(string arguments)
+        private static VPNStatus ExecuteVpnCommand(string arguments)
         {
             try
             {
@@ -184,15 +184,15 @@ namespace VpnQuickControl
                 // 接続時は "{}に正常に接続しました。"
                 // 切断時には"コマンドは正常に終了しました。"のみ。これは処理が成功したすべての場合に出力される
                 if (output.Contains("接続しました"))
-                    return VpnStatus.Connected;
+                    return VPNStatus.Connected;
                 else
-                    return VpnStatus.Disconnected;
+                    return VPNStatus.Disconnected;
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"VPNコマンドの実行中にエラーが発生しました: {ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return VpnStatus.Error;
+                return VPNStatus.Error;
             }
         }
 
@@ -205,7 +205,7 @@ namespace VpnQuickControl
         /// <summary>
         /// タスクバーアイコンを更新
         /// </summary>
-        private void UpdateTaskbarIcon() => Icon = new Icon(_isVpnConnected ? Config.VPNConnectIconPath : Config.VPNDisconnectIconPath);
+        private void UpdateTaskbarIcon() => Icon = new Icon(_isVPNConnected ? Config.VPNConnectIconPath : Config.VPNDisconnectIconPath);
 
         /// <summary>
         /// 暗号化されたパスワードを復号
@@ -252,7 +252,7 @@ namespace VpnQuickControl
 
     }
 
-    public enum VpnStatus
+    public enum VPNStatus
     {
         [Description("VPN未接続")]
         Disconnected = 0,
@@ -279,7 +279,7 @@ namespace VpnQuickControl
     public static class EnumExtensions
     {
         /// <summary>
-        /// VpnStatusのDescriptionを取得
+        /// VPNStatusのDescriptionを取得
         /// </summary>
         public static string GetDescription(this Enum value)
         {
