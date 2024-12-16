@@ -44,12 +44,12 @@ namespace VPNQuickControl
             // 
             // lblStatus
             // 
-            lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(115, 62);
+            lblStatus.Location = new Point(81, 62);
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(66, 15);
+            lblStatus.Size = new Size(127, 15);
             lblStatus.TabIndex = 2;
-            lblStatus.Text = "VPN未接続";
+            lblStatus.Text = "VPN接続試行中... (1/3)";
+            lblStatus.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // notifyIcon
             // 
@@ -69,7 +69,6 @@ namespace VPNQuickControl
             Name = "MainWindow";
             Text = "VpnQuickControl";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
