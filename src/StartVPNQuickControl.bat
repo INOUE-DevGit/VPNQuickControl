@@ -1,23 +1,18 @@
 @echo off
 
-rem _/_/_/_/_/_/_/_/_/ ユーザー設定 _/_/_/_/_/_/_/_/_/
+rem _/_/_/_/_/_/_/_/_/ ���[�U�[�ݒ� _/_/_/_/_/_/_/_/_/
 
-rem アプリケーションを配置しているディレクトリのパス
+rem �A�v���P�[�V������z�u���Ă���f�B���N�g���̃p�X
 set APP_DIR="C:\Dev\VPNQuickControl"
 
-rem アプリケーションの実行ファイル名
+rem �A�v���P�[�V�����̎��s�t�@�C����
 set APP_EXE="VPNQuickControl.exe"
 
 rem _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
 
-if not exist %APP_DIR% (
-    echo 必要なディレクトリが存在しません: %APP_DIR%
-    pause
-    exit
-)
 if not exist %APP_DIR%\%APP_EXE% (
-    echo 必要な実行ファイルが存在しません: %APP_DIR%\%APP_EXE%
+    echo �K�v�Ȏ��s�t�@�C�������݂��܂���: %APP_DIR%\%APP_EXE%
     pause
     exit
 )
