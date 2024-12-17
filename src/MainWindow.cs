@@ -40,9 +40,9 @@ namespace VPNQuickControl
         private void RegisterGlobalHotKey()
         {
             // グローバルホットキーを登録 (Ctrl + Shift + V)
-            bool hotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
+            bool isHotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
 
-            if (!hotKeyRegistered)
+            if (!isHotKeyRegistered)
                 MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -286,7 +286,7 @@ namespace VPNQuickControl
         public static string GetDescription(this Enum value)
         {
             FieldInfo? field = value.GetType().GetField(value.ToString());
-            var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute? attribute = field?.GetCustomAttribute<DescriptionAttribute>();
             return attribute?.Description ?? value.ToString();
         }
     }
