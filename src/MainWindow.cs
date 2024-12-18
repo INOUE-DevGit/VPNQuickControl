@@ -39,8 +39,8 @@ namespace VPNQuickControl
         /// </summary>
         private void RegisterGlobalHotKey()
         {
-            // グローバルホットキーを登録 (Ctrl + Shift + V)
-            bool isHotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Control | KeyModifiers.Shift, Keys.V);
+            // グローバルホットキーを登録 (Alt + Shift + V)
+            bool isHotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Alt | KeyModifiers.Shift, Keys.V);
 
             if (!isHotKeyRegistered)
                 MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
