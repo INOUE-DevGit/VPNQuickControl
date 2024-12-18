@@ -18,7 +18,7 @@ namespace VPNQuickControl
 
             InitializeWindow();
             RegisterGlobalHotKey();
-            CheckVpnStatus();
+            CheckVPNStatus();
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace VPNQuickControl
         /// <summary>
         /// VPN接続状態を確認
         /// </summary>
-        private void CheckVpnStatus()
+        private void CheckVPNStatus()
         {
-            switch (ExecuteVpnCommand(""))
+            switch (ExecuteVPNCommand(""))
             {
                 case VPNStatus.Disconnected:
                     _isVPNConnected = false;
@@ -70,22 +70,22 @@ namespace VPNQuickControl
         /// <summary>
         /// VPN接続状態を切り替え
         /// </summary>
-        private void ToggleVpnState()
+        private void ToggleVPNState()
         {
             if (_isVPNConnected)
-                DisconnectVpn();
+                DisconnectVPN();
             else
-                ConnectVpn();
+                ConnectVPN();
         }
 
-        private void BtnConnect_Click(object sender, EventArgs e) => ConnectVpn();
+        private void BtnConnect_Click(object sender, EventArgs e) => ConnectVPN();
 
-        private void BtnDisconnect_Click(object sender, EventArgs e) => DisconnectVpn();
+        private void BtnDisconnect_Click(object sender, EventArgs e) => DisconnectVPN();
 
         /// <summary>
         /// VPN接続
         /// </summary>
-        private void ConnectVpn()
+        private void ConnectVPN()
         {
             const int MaxRetryCount = 3;
             const int RetryDelayMs = 2000;
@@ -100,7 +100,7 @@ namespace VPNQuickControl
                 string vpnCommand = $"{Config.VPNName} {Config.UserName} {GetDecryptedPassword()}";
 
                 // VPN接続コマンドを実行
-                switch (ExecuteVpnCommand(vpnCommand))
+                switch (ExecuteVPNCommand(vpnCommand))
                 {
                     case VPNStatus.Connected:
                         _isVPNConnected = true;
@@ -112,7 +112,7 @@ namespace VPNQuickControl
                     case VPNStatus.Error:
                     default:
                         // 接続失敗時にポートを閉じるため切断処理
-                        DisconnectVpn();
+                        DisconnectVPN();
                         _isVPNConnected = false;
                         UpdateStatus($"{VPNStatus.Connecting.GetDescription()}... ({retryCount}/{MaxRetryCount})");
                         break;
@@ -129,12 +129,12 @@ namespace VPNQuickControl
         /// <summary>
         /// VPN切断
         /// </summary>
-        private void DisconnectVpn()
+        private void DisconnectVPN()
         {
             Config.LoadConfig();
             string vpnCommand = $"{Config.VPNName} /disconnect";
 
-            switch (ExecuteVpnCommand(vpnCommand))
+            switch (ExecuteVPNCommand(vpnCommand))
             {
                 case VPNStatus.Disconnected:
                     _isVPNConnected = false;
@@ -155,7 +155,7 @@ namespace VPNQuickControl
         /// </summary>
         /// <param name="arguments">VPNパラメータ</param>
         /// <remarks>argumentsで空文字を送るとステータスの確認が行えます。</remarks>
-        private static VPNStatus ExecuteVpnCommand(string arguments)
+        private static VPNStatus ExecuteVPNCommand(string arguments)
         {
             try
             {
@@ -234,7 +234,7 @@ namespace VPNQuickControl
             const int WM_HOTKEY = 0x0312;
 
             if (m.Msg == WM_HOTKEY)
-                ToggleVpnState();
+                ToggleVPNState();
 
             base.WndProc(ref m);
         }
