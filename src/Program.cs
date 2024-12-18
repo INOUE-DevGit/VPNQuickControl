@@ -50,7 +50,9 @@ namespace VPNQuickControl
                 if (!string.IsNullOrWhiteSpace(inputPassword))
                 {
                     SaveEncryptedPassword(inputPassword);
-                    MessageBox.Show("パスワードが保存されました。", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"パスワードが保存されました。{Environment.NewLine}{Environment.NewLine}" +
+                                    $"{Path.Combine(Directory.GetCurrentDirectory(), Config.PasswordFilePath)}",
+                                    "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {

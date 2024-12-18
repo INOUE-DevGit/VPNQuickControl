@@ -42,7 +42,9 @@ namespace VPNQuickControl
             if (!File.Exists(ConfigFilePath))
             {
                 CreateDefaultConfig();
-                MessageBox.Show($"初回起動のため、設定ファイル {ConfigFilePath} を作成しました。{Environment.NewLine}必要に応じて編集してください。",
+                MessageBox.Show($"初回起動のため、設定ファイル {ConfigFilePath} を作成しました。{Environment.NewLine}" +
+                                $"必要に応じて編集してください。{Environment.NewLine}{Environment.NewLine}" +
+                                $"{Path.Combine(Directory.GetCurrentDirectory(), ConfigFilePath)}",
                                 "情報", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
