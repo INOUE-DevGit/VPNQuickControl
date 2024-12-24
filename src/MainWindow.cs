@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -19,6 +20,7 @@ namespace VPNQuickControl
             InitializeWindow();
             RegisterGlobalHotKey();
             CheckVPNStatus();
+            RegisterNetworkChangeEvent();
         }
 
         /// <summary>
@@ -77,6 +79,11 @@ namespace VPNQuickControl
             else
                 ConnectVPN();
         }
+
+        /// <summary>
+        /// ネットワーク接続状態が変更されたときにVPN接続状態を確認
+        /// </summary>
+        private void RegisterNetworkChangeEvent() => NetworkChange.NetworkAddressChanged += (sender, e) => CheckVPNStatus();
 
         private void BtnConnect_Click(object sender, EventArgs e) => ConnectVPN();
 
