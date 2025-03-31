@@ -25,16 +25,14 @@ namespace VPNQuickControl
         private void InitializeWindow()
         {
             Icon = new Icon(Config.VPNDisconnectIconPath);
-            // タスクバーに表示
             ShowInTaskbar = true;
-            // 最小化状態で起動
             WindowState = FormWindowState.Minimized;
             Visible = true;
         }
 
         private void RegisterGlobalHotKey()
         {
-            // グローバルホットキーを登録 (Alt + Shift + V)
+            // グローバルホットキーを登録
             bool isHotKeyRegistered = RegisterHotKey(Handle, 0, KeyModifiers.Alt | KeyModifiers.Shift, Keys.V);
 
             if (!isHotKeyRegistered)
