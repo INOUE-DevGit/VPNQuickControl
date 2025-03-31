@@ -26,7 +26,6 @@ namespace VPNQuickControl
 
                 Config.LoadConfig();
 
-                // パスワードファイルの存在確認
                 CheckAndCreatePasswordFile();
 
                 Application.Run(new MainWindow());
@@ -40,7 +39,6 @@ namespace VPNQuickControl
 
         private static void CheckAndCreatePasswordFile()
         {
-            // ファイルが存在しない場合、パスワードを作成
             if (!File.Exists(Config.PasswordFilePath))
             {
                 MessageBox.Show("初回起動のため、VPNパスワードの設定が必要です。", "パスワード設定", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -63,7 +61,6 @@ namespace VPNQuickControl
 
         private static void SaveEncryptedPassword(string plainTextPassword)
         {
-            // パスワードを暗号化して保存
             byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(plainTextPassword);
             byte[] encryptedBytes = System.Security.Cryptography.ProtectedData.Protect(passwordBytes, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
             File.WriteAllText(Config.PasswordFilePath, Convert.ToBase64String(encryptedBytes));
