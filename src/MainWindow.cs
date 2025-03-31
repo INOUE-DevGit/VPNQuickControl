@@ -10,7 +10,6 @@ namespace VPNQuickControl
 {
     public partial class MainWindow : Form
     {
-        // VPN接続状態
         private bool _isVPNConnected = false;
 
         public MainWindow()
@@ -23,9 +22,6 @@ namespace VPNQuickControl
             RegisterNetworkChangeEvent();
         }
 
-        /// <summary>
-        /// ウィンドウの初期化
-        /// </summary>
         private void InitializeWindow()
         {
             Icon = new Icon(Config.VPNDisconnectIconPath);
@@ -36,9 +32,6 @@ namespace VPNQuickControl
             Visible = true;
         }
 
-        /// <summary>
-        /// グローバルホットキーを登録
-        /// </summary>
         private void RegisterGlobalHotKey()
         {
             // グローバルホットキーを登録 (Alt + Shift + V)
@@ -48,9 +41,6 @@ namespace VPNQuickControl
                 MessageBox.Show("ホットキーの登録に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        /// <summary>
-        /// VPN接続状態を確認
-        /// </summary>
         private void CheckVPNStatus()
         {
             switch (ExecuteVPNCommand(""))
@@ -69,9 +59,6 @@ namespace VPNQuickControl
             UpdateTaskbarIcon();
         }
 
-        /// <summary>
-        /// VPN接続状態を切り替え
-        /// </summary>
         private void ToggleVPNState()
         {
             if (_isVPNConnected)
@@ -89,9 +76,6 @@ namespace VPNQuickControl
 
         private void BtnDisconnect_Click(object sender, EventArgs e) => DisconnectVPN();
 
-        /// <summary>
-        /// VPN接続
-        /// </summary>
         private void ConnectVPN()
         {
             const int MaxRetryCount = 3;
@@ -133,9 +117,6 @@ namespace VPNQuickControl
             MessageBox.Show("VPN接続に失敗しました。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        /// <summary>
-        /// VPN切断
-        /// </summary>
         private void DisconnectVPN()
         {
             Config.LoadConfig();
@@ -205,15 +186,8 @@ namespace VPNQuickControl
             }
         }
 
-        /// <summary>
-        /// ステータスを更新
-        /// </summary>
-        /// <param name="status">ラベルに表示させる文字列</param>
         private void UpdateStatus(string status) => Invoke((Action)(() => lblStatus.Text = status));
 
-        /// <summary>
-        /// タスクバーアイコンを更新
-        /// </summary>
         private void UpdateTaskbarIcon() => Icon = new Icon(_isVPNConnected ? Config.VPNConnectIconPath : Config.VPNDisconnectIconPath);
 
         /// <summary>
@@ -287,9 +261,6 @@ namespace VPNQuickControl
 
     public static class EnumExtensions
     {
-        /// <summary>
-        /// VPNStatusのDescriptionを取得
-        /// </summary>
         public static string GetDescription(this Enum value)
         {
             FieldInfo? field = value.GetType().GetField(value.ToString());
